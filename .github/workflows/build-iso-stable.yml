@@ -1,12 +1,12 @@
 ---
-name: Build Stable ISOs
+name: Build DX ISOs
 on:
   merge_group:
   pull_request:
     branches:
       - main
     paths:
-      - ".github/workflows/build-iso-stable.yml"
+      - ".github/workflows/build-iso-dx.yml"   # <-- Dateiname hier anpassen
       - ".github/workflows/reusable-build-iso-anaconda.yml"
       - ".github/setup-runner-keys.sh"
       - "ghcr.io-ublue-os.pub"
@@ -25,16 +25,21 @@ on:
     - cron: "0 3 1 * *" # Push to testing bucket on the 1st day of the month at 03:00 UTC
 
 jobs:
-  build-iso-stable:
-    name: Build Stable ISOs
+  build-iso-dx:                                # <-- Job-ID anpassen
+    name: Build DX ISOs                        # <-- Job-Name anpassen
     permissions:
       contents: read
       id-token: write
       attestations: write
-      packages: read           # <-- Diese Zeile muss zwingend vorhanden sein
+      packages: read
     uses: ./.github/workflows/reusable-build-iso-anaconda.yml
     secrets: inherit
     with:
+      # HINWEIS: Braucht dein Reusable-Workflow hier vielleicht noch einen Input für DX?
+      # Zum Beispiel:
+      # image_name: my-image-dx
+      # flavor: dx
+      
       # Upload artifacts on PR checks or if manually requested
       upload_artifacts: ${{ github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && inputs.upload_artifacts) }}
       # Upload to R2 on merge_group, scheduled runs, or if manually requested

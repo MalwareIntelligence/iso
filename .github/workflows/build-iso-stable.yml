@@ -23,9 +23,14 @@ on:
         default: true
   schedule:
     - cron: "0 3 1 * *" # Push to testing bucket on the 1st day of the month at 03:00 UTC
+
 jobs:
   build-iso-stable:
     name: Build Stable ISOs
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
     uses: ./.github/workflows/reusable-build-iso-anaconda.yml
     secrets: inherit
     with:

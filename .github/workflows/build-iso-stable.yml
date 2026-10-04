@@ -31,7 +31,7 @@ jobs:
       contents: read
       id-token: write
       attestations: write
-      packages: read
+      packages: read           # <-- Diese Zeile muss zwingend vorhanden sein
     uses: ./.github/workflows/reusable-build-iso-anaconda.yml
     secrets: inherit
     with:
